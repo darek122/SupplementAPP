@@ -15,17 +15,15 @@ public class CategoryEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
+    @ManyToOne
+    @JoinColumn(name = "admin_id")
+    private AdminEntity admin;
+
     private String name;
 
     @OneToMany(mappedBy = "category",  cascade = CascadeType.ALL)
     private List<ProductEntity> products;
 
-    public List<ProductEntity> getProducts() {
-        return products;
-    }
 
-    public CategoryEntity setProducts(List<ProductEntity> products) {
-        this.products = products;
-        return this;
-    }
+
 }

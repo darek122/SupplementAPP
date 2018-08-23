@@ -4,6 +4,7 @@ import lombok.Data;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
+import pl.dariuszskrzypczak.SupplementAPP.models.AdminEntity;
 import pl.dariuszskrzypczak.SupplementAPP.models.UserEntity;
 
 @Service
@@ -12,4 +13,5 @@ import pl.dariuszskrzypczak.SupplementAPP.models.UserEntity;
 public class SessionService {
     private boolean isLogin;
     private UserEntity userEntity;
+    private AdminEntity adminEntity;
 }

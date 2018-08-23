@@ -7,15 +7,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pl.dariuszskrzypczak.SupplementAPP.models.forms.RegisterForm;
 import pl.dariuszskrzypczak.SupplementAPP.models.services.AuthService;
+import pl.dariuszskrzypczak.SupplementAPP.models.services.SessionService;
 
 @Controller
 public class AuthController {
 
     final AuthService authService;
+    final SessionService sessionService;
 
     @Autowired
-    public AuthController(AuthService authService) {
+    public AuthController(AuthService authService, SessionService sessionService) {
         this.authService = authService;
+        this.sessionService = sessionService;
     }
 
 
@@ -46,11 +49,24 @@ public class AuthController {
     public String login(@RequestParam("email")String email,
                         @RequestParam("password")String password,
                         Model model){
-        if(!authService.tryToLogin(email,password)) {
+        if(authService.adminLogin(email,password)){
+            return "redirect:/category";
+        }
+        else if(!authService.tryToLogin(email,password)) {
             model.addAttribute("infoAboutLogin","Nieprawidłowe Logowanie");
             return "login";
         }
+
         return "redirect:/category";
+    }
+
+    @GetMapping("/logout")
+    public String logout(){
+        sessionService.setLogin(false);
+        sessionService.setUserEntity(null);
+        sessionService.setAdminEntity(null);
+
+        return "redirect:/login";
     }
 
 }

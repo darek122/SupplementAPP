@@ -7,14 +7,26 @@
 
 </head>
 <body>
-<div style="width: 600px; margin-top: 50px; margin-left: auto; margin-right: auto; padding: 20px;">
-    <form>
+<div class="card-body" style="text-align: center;">
+
     <h1 th:text="${productKind.getName()}"></h1>
 
+
     <div th:each="product : ${productKind.getProducts()}">
-        <h2 class="alert-heading" th:text="${product.getName()}"></h2>
+
+        <span th:text="${product.getName()}"></span>
+
     </div>
+    <form th:action="'/product/' + ${productKind.getId()}" method="post" th:object="${productForm}">
+        <input th:field="*{name}" type="text" placeholder="Produkt"/>
+        <input class="btn btn-primary" type="submit" value="Wyślij"/>
     </form>
+    <a href="/category"  class="btn btn-primary" >Wróć do kategori</a>
+    &nbsp;
+    <a href="/logout"  class="btn btn-primary" >Wyloguj mnie</a>
+
+
+
 
 
 </div>
