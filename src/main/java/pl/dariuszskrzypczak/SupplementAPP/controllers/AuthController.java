@@ -23,22 +23,19 @@ public class AuthController {
 
 
     @GetMapping("/register")
-
     public String register(Model model){
         model.addAttribute("registerForm",new RegisterForm());
     return "register";
     }
 
     @PostMapping("/register")
-
     public String register(@ModelAttribute("registerForm")RegisterForm registerForm,
                            Model model){
-
         if(!authService.tryToRegister(registerForm)){
             model.addAttribute("infoAboutRegister","Email już jest zajęty");
             return "register";
         }
-        return "redirect:/";
+        return "redirect:/login";
     }
     @GetMapping("/login")
     public String login(){
@@ -48,23 +45,19 @@ public class AuthController {
     @PostMapping("/login")
     public String login(@RequestParam("email")String email,
                         @RequestParam("password")String password,
-                        Model model){
-        if(authService.adminLogin(email,password)){
+                        Model model) {
+
+        if (authService.tryToLogin(email, password)) {
             return "redirect:/category";
         }
-        else if(!authService.tryToLogin(email,password)) {
-            model.addAttribute("infoAboutLogin","Nieprawidłowe Logowanie");
-            return "login";
-        }
-
-        return "redirect:/category";
+        model.addAttribute("infoAboutLogin", "Nieprawidłowe Logowanie");
+        return "index";
     }
 
     @GetMapping("/logout")
     public String logout(){
         sessionService.setLogin(false);
         sessionService.setUserEntity(null);
-        sessionService.setAdminEntity(null);
 
         return "redirect:/login";
     }
